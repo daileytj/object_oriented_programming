@@ -53,10 +53,6 @@
 # in Dog into Cat; try to come up with some class hierarchy.
 
 class Animal
-  def speak
-    'bark!'
-  end
-
   def run
     'running!'
   end
@@ -73,6 +69,10 @@ class Cat < Animal
 end
 
 class Dog < Animal
+  def speak
+    'bark!'
+  end
+
   def swim
     'swimming!'
   end
@@ -93,3 +93,15 @@ end
 
 puts Cat.ancestors
 puts Dog.ancestors
+
+# Cat
+# Animal
+# Object
+# Kernel
+# BasicObject
+
+# Dog
+# Animal
+# Object
+# Kernel
+# BasicObject
