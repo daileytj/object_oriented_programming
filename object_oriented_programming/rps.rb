@@ -9,7 +9,7 @@ class Move
   end
 
   def rock?
-    @value = 'rock'
+    @value == 'rock'
   end
 
   def scissors?
@@ -143,6 +143,7 @@ class RPSGame
       human.choose
       computer.choose
       display_winner
+#      binding.pry
       break unless play_again?
     end
     display_goodbye_message
