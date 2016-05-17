@@ -1,7 +1,6 @@
-require 'pry'
-
+# frozen_string_literal:true
 class Move
-  VALUES = ['rock', 'paper', 'scissors']
+  VALUES.freeze = ['rock', 'paper', 'scissors']
   attr_accessor :value
 
   def initialize(value)
@@ -16,35 +15,21 @@ class Move
     @value == 'scissors'
   end
 
-  def paper? 
+  def paper?
     @value == 'paper'
   end
-     
+
   def >(other_move)
-    if rock?
-      return true if other_move.scissors?
-      return false
-    elsif paper?
-      return true if other_move.rock?
-      return false
-    elsif scissors?
-      return true if other_move.paper?
-      return false
-    end
-  end 
+    (rock? && other_move.scissors?) ||
+      (paper? && other_move.rock?) ||
+      (scissors? && other_move.paper?)
+  end
 
   def <(other_move)
-    if rock?
-      return true if other_move.paper?
-      return false
-    elsif paper?
-      return true if other_move.scissors?
-      return false
-    elsif scissors?
-      return true if other_move.rock?
-      return false
-    end
-  end 
+    (rock? && other_move.paper?) ||
+      (paper? && other_move.scissors?) ||
+      (scissors? && other_move.rock?)
+  end
 
   def to_s
     @value
@@ -87,6 +72,7 @@ class Computer < Player
   def set_name
     self.name = ['R2D2', 'Hal', 'Chappie', 'Sonny', 'Number 5'].sample
   end
+
   def choose
     self.move = Move.new(Move::VALUES.sample)
   end
@@ -105,10 +91,12 @@ class RPSGame
     puts "Welcome to Rock, Paper, Scissors!"
   end
 
-  def display_winner
+  def display_moves
     puts "#{human.name} chose #{human.move}."
     puts "#{computer.name} chose #{computer.move}."
+  end
 
+  def display_winner
     if human.move > computer.move
       puts "#{human.name} won!"
     elsif human.move < computer.move
@@ -132,8 +120,6 @@ class RPSGame
     end
 
     return true if answer == 'y'
-    return false
-
   end
 
   def play
@@ -142,8 +128,8 @@ class RPSGame
     loop do
       human.choose
       computer.choose
+      display_moves
       display_winner
-#      binding.pry
       break unless play_again?
     end
     display_goodbye_message
