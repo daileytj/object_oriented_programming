@@ -1,6 +1,5 @@
-# frozen_string_literal:true
 class Move
-  VALUES.freeze = ['rock', 'paper', 'scissors']
+  VALUES = ['rock', 'paper', 'scissors']
   attr_accessor :value
 
   def initialize(value)
