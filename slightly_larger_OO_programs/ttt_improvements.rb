@@ -99,8 +99,8 @@ class TTTGame
     puts "Thanks for playing Tic Tac Toe! Goodybye!"
   end
    
-  def display_board(clear = true)
-    system 'clear' if clear
+  def display_board(clear_screen = true)
+    system_clear if clear_screen = true
     puts "You're a #{human.marker}. Computer is a #{computer.marker}"
     puts ""
     puts "     |     |"
