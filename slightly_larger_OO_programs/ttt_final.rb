@@ -13,7 +13,7 @@ class Board
   end
 
   def unmarked_keys
-    @squares.keys.select {|key| @squares[key].unmarked? }
+    @squares.keys.select { |key| @squares[key].unmarked? }
   end
 
   def full?
@@ -35,9 +35,10 @@ class Board
   end
 
   def reset
-    (1..9).each {|key| @squares[key] = Square.new}
+    (1..9).each { |key| @squares[key] = Square.new }
   end
 
+  # rubocop:disable Metrics/AbcSize
   def draw
     puts "     |     |"
     puts "  #{@squares[1]}  |  #{@squares[2]}  |  #{@squares[3]}"
@@ -51,6 +52,7 @@ class Board
     puts "  #{@squares[7]}  |  #{@squares[8]}  |  #{@squares[9]}"
     puts "     |     |"
   end
+  # rubocop:enable Metrics/AbcSize
 
   private
 
@@ -59,7 +61,6 @@ class Board
     return false if markers.size != 3
     markers.min == markers.max
   end
-
 end
 
 class Square
@@ -116,7 +117,7 @@ class TTTGame
       loop do
         current_player_moves
         break if board.someone_won? || board.full?
-        clear_screen_and_display_board if human_turn?
+        clear_screen_and_display_board
       end
 
       display_result
@@ -144,10 +145,6 @@ class TTTGame
     display_board
   end
 
-  def human_turn?
-    @current_marker == HUMAN_MARKER
-  end
-
   def display_board
     puts "You're a #{human.marker}. Computer is a #{computer.marker}."
     puts ""
@@ -172,7 +169,7 @@ class TTTGame
   end
 
   def current_player_moves
-    if human_turn?
+    if @current_marker == HUMAN_MARKER
       human_moves
       @current_marker = COMPUTER_MARKER
     else
@@ -203,6 +200,7 @@ class TTTGame
       puts "Sorry, must be y or n"
     end
 
+    answer == 'y'
   end
 
   def clear
