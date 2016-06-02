@@ -1,14 +1,24 @@
 class Board
   WINNING_LINES = [[1,2,3],[4,5,6],[7,8,9],[1,4,7],[2,5,8],[3,6,9]] +
                   [[1,5,9],[3,5,7]]
-  
+                  
   def initialize
     @squares = {}
     reset
   end
 
-  def get_square_at(key)
-    @squares[key] 
+  def draw
+    puts "     |     |"
+    puts "  #{@squares[1]}  |  #{@squares[2]}  |  #{@squares[3]}"
+    puts "     |     |"
+    puts "-----+-----+-----"
+    puts "     |     |"
+    puts "  #{@squares[4]}  |  #{@squares[5]}  |  #{@squares[6]}"
+    puts "     |     |"
+    puts "-----+-----+-----"
+    puts "     |     |"
+    puts "  #{@squares[7]}  |  #{@squares[8]}  |  #{@squares[9]}"
+    puts "     |     |"
   end
 
   def set_square_at(key, marker)
@@ -103,17 +113,7 @@ class TTTGame
     system_clear if options[:clear_screen]
     puts "You're a #{human.marker}. Computer is a #{computer.marker}"
     puts ""
-    puts "     |     |"
-    puts "  #{board.get_square_at(1)}  |  #{board.get_square_at(2)}  |  #{board.get_square_at(3)}"
-    puts "     |     |"
-    puts "-----+-----+-----"
-    puts "     |     |"
-    puts "  #{board.get_square_at(4)}  |  #{board.get_square_at(5)}  |  #{board.get_square_at(6)}"
-    puts "     |     |"
-    puts "-----+-----+-----"
-    puts "     |     |"
-    puts "  #{board.get_square_at(7)}  |  #{board.get_square_at(8)}  |  #{board.get_square_at(9)}"
-    puts "     |     |"
+    board.draw
     puts ""
   end
 
@@ -162,6 +162,16 @@ class TTTGame
     system 'clear'
   end
 
+  def reset
+    board.reset
+    system_clear
+  end
+
+  def display_play_again_message
+    puts "Let's play again"
+    puts ""
+  end
+
   def play
     system_clear
     display_welcome_message
@@ -179,10 +189,8 @@ class TTTGame
       end
       display_result
       break unless play_again?
-      board.reset
-      system_clear
-      puts "Let's play again"
-      puts ""
+      reset
+      display_play_again_message
     end
 
     display_goodbye_message
