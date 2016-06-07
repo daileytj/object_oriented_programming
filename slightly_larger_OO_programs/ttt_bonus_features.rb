@@ -86,31 +86,70 @@ class Square
 end
 
 class Player
-  attr_reader :marker
+  attr_accessor :marker, :name
 
   def initialize(marker)
     @marker = marker
+    set_name
   end
 end
 
-class TTTGame
-  HUMAN_MARKER = "X"
-  COMPUTER_MARKER = "O"
-  FIRST_TO_MOVE = HUMAN_MARKER
+class Human < Player
 
+  def set_name
+    puts "What is your name?"
+    name = ""
+    loop do
+      name = gets.chomp.downcase
+      break unless name == ""
+      puts "You must enter a name"
+    end
+    @name = name.capitalize
+  end
+end
+
+class Computer < Player
+
+  def set_name
+    @name = ["BB8", "Predator", "Reptar", "George"].sample
+  end
+end
+
+
+
+class TTTGame
   attr_reader :board, :human, :computer
 
   def initialize
     @board = Board.new
-    @human = Player.new(HUMAN_MARKER)
-    @computer = Player.new(COMPUTER_MARKER)
-    @current_marker = FIRST_TO_MOVE
+    @human_marker = choose_marker
+    @human = Human.new(@human_marker)
+    @computer_marker = get_computer_marker
+    @computer = Computer.new(@computer_marker)
+    @first_to_move = @human_marker
+    @current_marker = @first_to_move
+  end
+
+  def choose_marker
+    human_marker = ''
+    loop do 
+      puts "Choose a single character for your marker."
+      human_marker = gets.chomp.strip.upcase
+      break if human_marker.length == 1
+      puts "Sorry, your character must be one character."
+    end 
+    human_marker
+  end
+
+  def get_computer_marker
+    computer_marker = ("A".."Z").to_a
+    computer_marker.delete(@human_marker)
+    computer_marker.sample
   end
 
   def play
     clear
     display_welcome_message
-
     loop do
       display_board
 
@@ -146,7 +185,7 @@ class TTTGame
   end
 
   def display_board
-    puts "You're a #{human.marker}. Computer is a #{computer.marker}."
+    puts "#{human.name} is a(n) #{human.marker}. #{computer.name} is a(n) #{computer.marker}."
     puts ""
     board.draw
     puts ""
@@ -174,12 +213,12 @@ class TTTGame
   end
 
   def current_player_moves
-    if @current_marker == HUMAN_MARKER
+    if @current_marker == @human_marker
       human_moves
-      @current_marker = COMPUTER_MARKER
+      @current_marker = @computer_marker
     else
       computer_moves
-      @current_marker = HUMAN_MARKER
+      @current_marker = @human_marker
     end
   end
 
@@ -214,7 +253,7 @@ class TTTGame
 
   def reset
     board.reset
-    @current_marker = FIRST_TO_MOVE
+    @current_marker = @first_to_move
     clear
   end
 
